@@ -3,21 +3,34 @@ from hw_2.base import Vehicle
 
 
 class Plane(Vehicle):
-    cargo: int
-    max_cargo: int
+    cargo: int = 0
+    max_cargo: int = 0
 
-    def __init__(self, max_cargo=0, cargo=0, weight=0, started=False, fuel=0, fuel_consumption=0.0):
-        self.max_cargo = max_cargo
-        self.cargo = cargo
+    def __init__(self, weight, started, fuel, fuel_consumption, max_cargo, cargo):
         super().__init__(weight, started, fuel, fuel_consumption)
+        self.max_cargo = max_cargo
+        self._cargo = cargo
+
+    @property
+    def cargo_space(self):
+        return self.max_cargo - self.cargo
 
     def load_cargo(self, n):
-        if n + self.cargo > self.max_cargo:
+        if n > self.cargo_space:
             raise CargoOverload
-        else:
-            self.cargo += n
+        self._cargo += n
+
+    @property
+    def cargo(self):
+        return self._cargo
+
+    @cargo.setter
+    def cargo(self, value):
+        if value >= self.max_cargo:
+            raise CargoOverload
+        self._cargo = value
 
     def remove_all_cargo(self):
-        res = self.cargo
-        self.cargo = 0
+        res = self._cargo
+        self._cargo = 0
         return res
