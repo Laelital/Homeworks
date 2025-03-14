@@ -9,6 +9,5 @@ class Car(Vehicle):
         self.engine = engine
         super().__init__(weight, started, fuel, fuel_consumption)
 
-    # Методы класса
     def set_engine(self, engine: Engine):
         self.engine = engine
