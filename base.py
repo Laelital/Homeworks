@@ -3,13 +3,7 @@ from hw_2 import exceptions
 
 
 class Vehicle(ABC):
-    # Атрибуты класса
-    weight: int = 0
-    started: bool = False
-    fuel: int = 0
-    fuel_consumption: float = 0.0
-
-    def __init__(self, weight, started, fuel, fuel_consumption):
+       def __init__(self, weight: int = 0, started: bool = False, fuel: int = 0, fuel_consumption: float = 0.0):
         self.weight = weight
         self._started = started
         self._fuel = fuel
@@ -17,20 +11,21 @@ class Vehicle(ABC):
 
     def start(self):
         if self._started:
-            raise ValueError
+            raise ValueError('Нельзя запустить двигатель повторно')
         if self._fuel <= 0:
-            raise exceptions.LowFuelError
+            raise exceptions.LowFuelError(self._fuel)
         self._started = True
 
-    def move(self, s: int):
+    def move(self, distance: int):
         if self._started:
-            r = s * self.fuel_consumption / 100
-            if r <= self.fuel:
-                self.fuel -= r
+            total_fuel = distance * self.fuel_consumption / 100
+            if total_fuel <= self.fuel:
+                self.fuel -= total_fuel
             else:
-                raise exceptions.NotEnoughFuel
+                raise exceptions.NotEnoughFuel(distance)
         else:
-            raise ValueError
+            raise ValueError('Сначала нужно запустить двигатель')
+
 
     @property
     def fuel(self):
