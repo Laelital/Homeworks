@@ -3,11 +3,9 @@ from hw_2.engine import Engine
 
 
 class Car(Vehicle):
-    engine: Engine = None
-
-    def __init__(self, engine: Engine, weight, started, fuel, fuel_consumption):
-        self.engine = engine
+     def __init__(self, weight, started, fuel, fuel_consumption, engine: Engine = None):
         super().__init__(weight, started, fuel, fuel_consumption)
+        self.engine = engine
 
     def set_engine(self, engine: Engine):
         self.engine = engine
