@@ -12,11 +12,6 @@ class Plane(Vehicle):
     def cargo_space(self):
         return self.max_cargo - self.cargo
 
-    def load_cargo(self, value):
-        if value > self.cargo_space:
-            raise CargoOverload(value)
-        self._cargo += value
-
     @property
     def cargo(self):
         return self._cargo
@@ -26,6 +21,11 @@ class Plane(Vehicle):
         if value >= self.max_cargo:
             raise CargoOverload(value)
         self._cargo = value
+
+    def load_cargo(self, value):
+        if value > self.cargo_space:
+            raise CargoOverload(value)
+        self._cargo += value
 
     def remove_all_cargo(self):
         res = self._cargo
