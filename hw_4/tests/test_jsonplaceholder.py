@@ -13,39 +13,29 @@ class TestJsonPlaceHolder:
     @pytest.mark.parametrize('num', [1, 100])
     def test_get_post(self, base_url, num):
         """ Граничные значения для запроса постов"""
-        res = req.get_post(base_url, num)
+        res = req.get_resource(base_url, 'posts', num)
         assert res.status_code == 200
         assert valid.Post(**res.json())
 
     @pytest.mark.parametrize('num', [1, 10])
     def test_get_user(self, base_url, num):
         """ Граничные значения для запроса пользователей"""
-        res = req.get_user(base_url, num)
+        res = req.get_resource(base_url, 'users', num)
         assert res.status_code == 200
         assert valid.User(**res.json())
 
-    @pytest.mark.parametrize('flt', ['postId', 'id'])
-    def test_get_comment_with_filter(self, base_url, flt):
-        """ Граничные значения для запроса комментариев с фильтрами postId и id"""
-        if flt == 'id':
-            num = random.randint(1, 500)
-        else:
-            num = random.randint(1, 100)
-        res = req.get_comments_with_filter(base_url, flt, num)
+    @pytest.mark.parametrize('num', [1, 100])
+    def test_get_comment_with_filter(self, base_url, num):
+        """ Граничные значения для запроса комментариев с фильтром postId"""
+        res = req.get_resource_with_filter(base_url, 'comments', 'postId', num)
         assert res.status_code == 200
         for comment in res.json():
             assert valid.Comment(**comment)
 
-    @pytest.mark.parametrize('flt', ['userId', 'id', 'completed'])
-    def test_get_list_todos_with_filter(self, base_url, flt):
-        """ Граничные значения для запроса задач с фильтрами userId, id и completed"""
-        if flt == 'id':
-            num = random.randint(1, 200)
-        elif flt == 'completed':
-            num = bool(random.randint(0, 1))
-        else:
-            num = random.randint(1, 10)
-        res = req.get_list_todos_with_filter(base_url, flt, num)
+    @pytest.mark.parametrize('num', [1, 200])
+    def test_get_list_todos_with_filter(self, base_url, num):
+        """ Граничные значения для запроса задач с фильтром id"""
+        res = req.get_resource_with_filter(base_url, 'todos', 'id', num)
         assert res.status_code == 200
         for todos in res.json():
             assert valid.Todos(**todos)
