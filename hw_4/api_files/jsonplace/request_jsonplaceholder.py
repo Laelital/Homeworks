@@ -1,32 +1,16 @@
 import requests
 
 
-def get_post(base_url, num=''):
-    res = requests.get(f'{base_url}/posts/{num}')
+def get_resource(base_url, resource='', num=''):
+    res = requests.get(f'{base_url}/{resource}/{num}')
     try:
         return res
     except requests.exceptions.RequestException:
         print('Ошибка, статус код: ', {res.status_code})
 
 
-def get_user(base_url, num=''):
-    res = requests.get(f'{base_url}/users/{num}')
-    try:
-        return res
-    except requests.exceptions.RequestException:
-        print('Ошибка, статус код: ', {res.status_code})
-
-
-def get_comments_with_filter(base_url, flt='id', num=1):
-    res = requests.get(f'{base_url}/comments?{flt}={num}')
-    try:
-        return res
-    except requests.exceptions.RequestException:
-        print('Ошибка, статус код: ', {res.status_code})
-
-
-def get_list_todos_with_filter(base_url, flt='id', num=1):
-    res = requests.get(f'{base_url}/todos?{flt}={num}')
+def get_resource_with_filter(base_url, resource='', flt='', num=1):
+    res = requests.get(f'{base_url}/{resource}?{flt}={num}')
     try:
         return res
     except requests.exceptions.RequestException:
